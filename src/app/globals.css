@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+/* Design tokens MBT Academy — sombre par défaut, un seul accent réservé à l'action.
+   Gris chauds uniquement (pas de mélange chaud/froid). */
+:root {
+  --bg-base: #0e0d0c;
+  --bg-raised: #171615;
+  --bg-sunken: #080807;
+  --bg-light: #f2f0ec;
+  --fg: #f4f2ef;
+  --fg-muted: #a6a29d;
+  --fg-on-light: #141312;
+  --border: #2b2926;
+  /* TODO: remplacer par la couleur du logo MBT si elle existe (garder saturation < 80 %) */
+  --accent: #d1402f; /* fonds / boutons — blanc dessus : 4.68:1 */
+  --accent-hover: #b8322a;
+  --accent-ink: #e8594a; /* petit texte accent sur fond sombre — 5.5:1 */
+  --accent-ink-light: #b8322a; /* texte accent sur fond clair — 5.2:1 */
+  --fg-on-accent: #ffffff;
+  --success: #4cc27a;
+  --error: #ef6a5a;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --color-bg: var(--bg-base);
+  --color-raised: var(--bg-raised);
+  --color-sunken: var(--bg-sunken);
+  --color-light: var(--bg-light);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-on-light: var(--fg-on-light);
+  --color-line: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-ink-light: var(--accent-ink-light);
+  --color-on-accent: var(--fg-on-accent);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --font-display: var(--font-anton);
+  --font-sans: var(--font-geist);
+  --ease-out: var(--ease-out);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--fg);
+}
+
+/* Grain : calque fixe, jamais sur un conteneur qui scrolle (pas de repaint). */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--fg-on-accent);
+}
+
+@utility display {
+  font-family: var(--font-anton);
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+}
+
+@utility container-site {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @variant md {
+    padding-inline: 2rem;
+  }
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Variante sans opacité pour les H1 : l'élément LCP est peint immédiatement. */
+@keyframes rise-soft {
+  from {
+    transform: translateY(24px);
+  }
+  to {
+    transform: none;
+  }
+}
+.animate-rise-soft {
+  animation: rise-soft 700ms var(--ease-out) both;
+}
+
+.animate-rise {
+  animation: rise 700ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Scroll reveal : piloté par <Reveal> (IntersectionObserver). Sans JS, tout reste visible. */
+.js [data-reveal] > * {
+  opacity: 0;
+  transform: translateY(28px);
+  transition-property: opacity, transform, background-color, border-color, color;
+  transition-duration: 700ms, 700ms, 300ms, 300ms, 300ms;
+  transition-timing-function: var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 80ms), calc(var(--i, 0) * 80ms), 0ms, 0ms, 0ms;
+}
+.js [data-reveal].is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+  .js [data-reveal] > * {
+    opacity: 1;
+    transform: none;
+  }
+}
