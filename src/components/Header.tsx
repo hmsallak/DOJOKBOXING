@@ -19,7 +19,10 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line">
+      {/* Flou dans un calque à part : un backdrop-filter sur le header ferait du header
+          le conteneur des éléments `fixed` et piégerait le menu mobile à 64 px de haut. */}
+      <div aria-hidden className="absolute inset-0 -z-10 bg-bg/90 backdrop-blur" />
       <div className="container-site flex h-16 items-center justify-between gap-6 md:h-20">
         <Link href="/" className="display text-2xl md:text-3xl" onClick={() => setOpen(false)}>
           MBT<span className="text-accent">.</span>Academy
@@ -66,7 +69,7 @@ export function Header() {
         <nav
           id="menu-mobile"
           aria-label="Navigation mobile"
-          className="container-site fixed inset-x-0 bottom-0 top-16 flex flex-col gap-2 overflow-y-auto bg-bg py-8 md:top-20 lg:hidden"
+          className="container-site fixed inset-x-0 top-16 z-50 flex h-[calc(100dvh-4rem)] flex-col gap-2 overflow-y-auto overscroll-contain bg-bg py-8 md:top-20 md:h-[calc(100dvh-5rem)] lg:hidden"
         >
           {NAV.map((item, i) => (
             <Link

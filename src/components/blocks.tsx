@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   AUDIENCE_LABELS,
@@ -108,10 +109,19 @@ export function PlanCard({ p }: { p: Plan }) {
 
 export function CoachCard({ coach }: { coach: Coach }) {
   return (
-    <article className="border border-line">
-      <div className="flex aspect-[3/4] items-center justify-center bg-raised text-sm text-muted">
-        {/* TODO: <Image src={coach.photo} …/> quand les photos sont fournies */}
-        Photo à venir
+    <article className="group border border-line">
+      <div className="relative aspect-[3/4] overflow-hidden bg-raised">
+        {coach.photo ? (
+          <Image
+            src={coach.photo}
+            alt={`${coach.name}, ${coach.role.toLowerCase()} de MBT Academy`}
+            fill
+            sizes="(min-width: 1024px) 24rem, (min-width: 640px) 50vw, 100vw"
+            className="object-cover object-top grayscale transition-[filter] duration-500 group-hover:grayscale-0"
+          />
+        ) : (
+          <div className="flex size-full items-center justify-center text-sm text-muted">Photo à venir</div>
+        )}
       </div>
       <div className="p-6">
         <h2 className="display text-3xl">{coach.name}</h2>

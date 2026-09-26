@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon, StarIcon } from "@phosphor-icons/react/dist/ssr";
 import { club, classTypes, coaches, faq } from "@/data/club";
@@ -80,20 +81,24 @@ export default function Home() {
             </div>
           </div>
 
-          {/* TODO: remplacer par <Image> d'une vraie photo N&B du club (priority, sizes) */}
-          <div
-            className="animate-rise relative hidden aspect-[4/5] overflow-hidden border border-line bg-raised md:block"
+          <figure
+            className="animate-rise relative aspect-[4/5] overflow-hidden border border-line bg-raised"
             style={{ "--i": 2 } as React.CSSProperties}
           >
-            <div
-              aria-hidden
-              className="absolute inset-0 opacity-40"
-              style={{ backgroundImage: "repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,0.04) 14px 15px)" }}
+            <Image
+              src={coaches[0].photo!}
+              alt={`${coaches[0].name}, entraîneur de MBT Academy, corrige la garde au sac`}
+              fill
+              priority
+              sizes="(min-width: 768px) 40vw, 100vw"
+              className="object-cover object-[50%_30%] grayscale contrast-110"
             />
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent" />
-            <p className="display absolute bottom-6 left-6 right-6 text-7xl text-fg/10 lg:text-8xl">MBT</p>
-            <p className="absolute left-6 top-6 text-xs uppercase tracking-widest text-muted">Photo du club à fournir</p>
-          </div>
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-bg/90 via-bg/10 to-transparent" />
+            <figcaption className="absolute bottom-5 left-5 right-5">
+              <p className="display text-3xl md:text-4xl">{coaches[0].name}</p>
+              <p className="mt-1 text-sm text-fg/80">{coaches[0].credentials[0]}</p>
+            </figcaption>
+          </figure>
         </div>
       </section>
 

@@ -152,14 +152,14 @@ export type Coach = {
   photo?: string; // chemin dans /public
 };
 
-// TODO: vrais coachs (nom, diplômes, palmarès vérifiables, photo)
 export const coaches: Coach[] = [
   {
-    slug: "coach-principal",
-    name: "[Nom du coach]",
-    role: "Fondateur · Entraîneur principal",
-    credentials: ["[Diplôme : BPJEPS / DE…]", "[Palmarès]"],
-    bio: "[2–3 phrases factuelles : parcours, depuis quand il/elle entraîne, ce qu'il/elle apporte aux débutants.]",
+    slug: "madiba-bayo-thomas",
+    name: "Madiba Bayo Thomas",
+    role: "Entraîneur principal", // TODO: fondateur ? (MBT = ses initiales)
+    credentials: ["25 ans d'expérience en boxe"], // TODO: diplômes, palmarès vérifiables
+    bio: "25 ans d'expérience au service des débutants comme des boxeurs confirmés.",
+    photo: "/coachs/madiba-bayo-thomas.png",
   },
 ];
 
